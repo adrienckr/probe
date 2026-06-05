@@ -7,41 +7,32 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 probe gives Claude Code, Codex, and any MCP agent semantic search over your
-repo's code and docs — so it finds the right context by *meaning*, not keywords,
-and stops guessing.
+repo's code and docs. It finds context by meaning, not keywords.
 
 ## Why it matters
 
-When your agent explores a codebase with `grep`, it only matches exact strings:
+When an agent explores with `grep`, it only matches exact strings:
 
-- It finds `getUser`, but misses the `fetch_account` that does the real work —
-  so it never reads the code that matters.
-- To "look around," it reloads whole files, burning its context window on noise.
-- With no ranking, it grabs the first plausible match and hallucinates the rest.
+- It finds `getUser` but misses `fetch_account`, the function that does the work.
+- To look around, it reloads whole files and fills its context window.
+- With no ranking, it takes the first match that looks plausible.
 
-probe returns ranked `file:line` references by meaning, auto-refreshed on every
-search, so your agent reads the right code the first time.
+probe returns ranked `file:line` results by meaning, refreshed on every search.
 
 ## Results
 
-probe doesn't just feel better — it measurably improves what an agent gets done.
-We ran the same agent (Claude Sonnet 4.6) on 8 real-world coding tasks, with and
-without probe; with probe, the agent used it for all code exploration.
+We ran the same agent (Claude Sonnet 4.6) on 8 coding tasks, with and without
+probe. With probe, the agent used it for all code exploration.
 
-![Test-pass rate per task — probe vs baseline](assets/accuracy_per_task.png)
+![Test-pass rate per task, probe vs baseline](assets/accuracy_per_task.png)
 
 - **93.1%** average test-pass rate with probe vs **84.1%** without.
-- On `eicrud`, probe reached **100%** and cracked the task — the baseline managed 44%.
-- The honest tradeoff: **~39% more tokens**, because search results stay in the
-  agent's context across turns. probe's own embedding/rerank API was negligible
-  (**$0.80** across all 8 tasks).
+- On `eicrud`, probe reached **100%** and solved the task. The baseline got 44%.
+- Tradeoff: about **39% more tokens**, because search results stay in the agent's
+  context across turns. probe's own embedding and rerank API cost **$0.80** across
+  all 8 tasks.
 
-<sub>Source: ZeroEntropy internal benchmark — 8 tasks graded to completion, Sonnet 4.6, seed 0.</sub>
-
-## See it in action
-
-<!-- TODO(GTM): embed Dilawar's videos (probe vs plain Claude Code). Need the links. -->
-_Walkthrough videos coming soon._
+<sub>Source: ZeroEntropy internal benchmark. 8 tasks graded to completion, Sonnet 4.6, seed 0.</sub>
 
 ## Quick Start
 
@@ -53,9 +44,9 @@ Claude Code:
 /plugin install probe@zeroentropy
 ```
 
-Claude Code asks for your key during install and runs probe for you — nothing to
-install separately. Ask a question about your repo and probe auto-indexes on the
-first search.
+Claude Code asks for your key during install and runs probe for you. Nothing else
+to install. Ask a question about your repo and probe auto-indexes on the first
+search.
 
 <details>
 <summary><b>Codex, CLI-only, and other MCP agents</b></summary>
@@ -118,8 +109,7 @@ the project root. Claude Code sets `CLAUDE_PROJECT_DIR` automatically.
 3. It fuses and reranks results with ZeroEntropy `zerank-2`.
 4. It returns focused file, section, and line references to the agent.
 
-Hybrid retrieval plus cross-encoder reranking is why probe surfaces the code that
-keyword search walks right past.
+Hybrid retrieval plus reranking is why probe surfaces code that keyword search misses.
 
 ## Verify Setup
 

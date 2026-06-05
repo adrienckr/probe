@@ -24,18 +24,17 @@ search, so your agent reads the right code the first time.
 
 ## Results
 
-We ran an agent (Claude Sonnet 4.6) on 8 real-world coding tasks, with and
-without probe. With probe, the agent used it for all code exploration.
+probe doesn't just feel better — it measurably improves what an agent gets done.
+We ran the same agent (Claude Sonnet 4.6) on 8 real-world coding tasks, with and
+without probe; with probe, the agent used it for all code exploration.
 
-| | With probe | Without |
-|---|---|---|
-| Avg. test-pass rate | **93.1%** | 84.1% |
-| `eicrud` (a hard task) | **100% — cracked it** | 44% |
+![Test-pass rate per task — probe vs baseline](assets/accuracy_per_task.png)
 
-probe lifted the average test-pass rate by ~9 points and cracked a task the
-baseline couldn't. The honest tradeoff: it used **~39% more tokens**, because
-search results stay in the agent's context across turns — probe's own
-embedding/rerank API was negligible (**$0.80** across all 8 tasks).
+- **93.1%** average test-pass rate with probe vs **84.1%** without.
+- On `eicrud`, probe reached **100%** and cracked the task — the baseline managed 44%.
+- The honest tradeoff: **~39% more tokens**, because search results stay in the
+  agent's context across turns. probe's own embedding/rerank API was negligible
+  (**$0.80** across all 8 tasks).
 
 <sub>Source: ZeroEntropy internal benchmark — 8 tasks graded to completion, Sonnet 4.6, seed 0.</sub>
 
